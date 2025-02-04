@@ -1,47 +1,72 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from 'vue';
+import Home from './components/Home.vue';
+import Navbar from './components/Navbar.vue';
+import PaymentSelect from './components/PaymentSelect.vue';
+import BankingBilletInfo from './components/BankingBilletInfo.vue';
+import CreditCardInfo from './components/CreditCardInfo.vue';
+import PixFinishPayment from './components/PixFinishPayment.vue';
+import Summary from './components/Summary.vue';
+
+const currentPage = ref('home');
+const paymentSelected = ref('');
+const purchasedItems = ref([]);
+const hasSelectedItems = ref(false);
+const errorMessage = ref('');
+
+function navigateTo(page) {
+  if (page === 'payment' && !hasSelectedItems.value) {
+    errorMessage.value = 'Selecione pelo menos um item antes de prosseguir!';
+    return;
+  }
+  
+  errorMessage.value = '';
+  currentPage.value = page;
+}
+
+function getPurchasedItems(items){
+  purchasedItems.value = items;
+}
+
+function updateSelectedItems(hasItems) {
+  errorMessage.value = '';
+  hasSelectedItems.value = hasItems;
+}
+
+function updateSelectedPayment(payment){
+  paymentSelected.value = payment;
+}
+
+function getPaymentPage(payment) {
+  updateSelectedPayment(payment);
+  const paymentPage = payment + "Info";
+  if(payment === "pix"){
+    const paymentPage = payment + "FinishPayment";
+    navigateTo(paymentPage);
+    return;
+  }
+  navigateTo(paymentPage);
+}
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div>
+    <Navbar :currentPage="currentPage" @navigate="navigateTo" />
+    <div v-if="errorMessage" class="alert alert-danger text-center">
+      {{ errorMessage }}
     </div>
-  </header>
+    
+    <Home v-if="currentPage === 'home'" @hasSelectedItems="updateSelectedItems" @selectedItems="getPurchasedItems"/>
 
-  <main>
-    <TheWelcome />
-  </main>
+    <PaymentSelect v-if="currentPage === 'payment'" @paymentSelected="getPaymentPage"/>
+
+    <PixFinishPayment v-if="currentPage === 'pixFinishPayment'"/>
+
+    <Summary 
+    v-if="currentPage === 'summary'"
+    :items="purchasedItems"
+    :paymentMethod="paymentSelected"
+    />
+  </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
