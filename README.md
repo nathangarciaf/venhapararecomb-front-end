@@ -42,5 +42,16 @@ Apresenta as seguintes informações (Summary.vue):
 * Data da compra
 * Previsão de entrega 
 
+## Execução
+Entrar na página recomb-frontend e rodar o comando:
+```
+npm install
+```
+Logo após, apenas executa, no mesmo diretório, o comando:
+```
+npm run dev
+```
+E entre no link: 'http://localhost:5173/'
+
 ## Diferenciais
 - Implementar usando Vue
