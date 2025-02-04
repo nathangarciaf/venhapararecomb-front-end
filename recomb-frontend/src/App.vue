@@ -63,6 +63,8 @@ function getPaymentPage(payment) {
 
     <PixFinishPayment v-if="currentPage === 'pixFinishPayment'"/>
 
+    <BankingBilletInfo v-if="currentPage === 'bankingBilletInfo'" ></BankingBilletInfo>
+
     <Summary 
     v-if="currentPage === 'summary'"
     :items="purchasedItems"
