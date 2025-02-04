@@ -9,6 +9,7 @@ const cpfOrCnpj = ref('');
 const name = ref('');
 const securityCode = ref('');
 const cardNumber = ref('');
+const installments = ref(null);
 
 const dueDate = ref({
   month: new Date().getMonth(),
@@ -26,12 +27,14 @@ function submitCreditCardInfo(){
     validateCVV(securityCode, errors);
     validateCreditCardBrand(creditCardBrand, errors);
     validateDueDate(dueDate, errors);
+    validateInstallments(installments, errors);
     
     if (errors.length > 0) {
         alert(errors.join(', '));
-        errors = [];
         return;
     }
+
+    emit('creditCardInfoCompleted', 'creditCardFinishPayment');
 }
 
 // Retorna para a seleção de método de pagamento caso o usuário deseje.
@@ -70,6 +73,12 @@ function validateCVV(cvv, errors) {
     }
 }
 
+function validateCardNumber(cardNumber, errors) {
+    if (!cardNumber.value) {
+        errors.push("Número do cartão é obrigatório!");
+    }
+}
+
 function validateCreditCardBrand(brand, errors) {
     if (!brand.value) {
         errors.push("Bandeira do cartão é obrigatória!");
@@ -82,6 +91,11 @@ function validateDueDate(dueDate, errors) {
     }
 }
 
+function validateInstallments(installments, errors) {
+    if (!installments.value) {
+        errors.push("É obrigatório selecionar o número de parcelas!");
+    }
+}
 </script>
 
 <template>
@@ -110,7 +124,6 @@ function validateDueDate(dueDate, errors) {
                             <label class="ms-2" for="amex">American Express</label>
                         </div>
                     </div>
-                    
                 </div>
 
                 <div class="mb-2 align-items-center">
@@ -133,11 +146,18 @@ function validateDueDate(dueDate, errors) {
                         <label class="fw-bold me-3 fs-5" for="dueDate">Data de Vencimento:</label>
                         <VueDatePicker v-model="dueDate" month-picker />
                     </div>
-
                     <div class="mb-2 align-items-center ms-1">
                         <label class="fw-bold me-3 fs-5" for="securityCode">CVV:</label>
                         <input class="form-control" type="text" id="securityCode" v-model="securityCode"/>
                     </div>
+                </div>
+
+                <div class="mb-2 align-items-center">
+                    <label class="fw-bold me-3 fs-5" for="installments">Número de Parcelas:</label>
+                    <select class="form-control" id="installments" v-model="installments">
+                        <option value="" disabled>Selecione</option>
+                        <option v-for="i in 12" :key="i" :value="i">{{ i }}x</option>
+                    </select>
                 </div>
 
                 <div class="mt-3">

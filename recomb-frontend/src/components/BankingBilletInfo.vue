@@ -55,6 +55,11 @@ function validateCPF(cpf, errors) {
 function validateEmail(email, errors) {
     if (!email.value) {
         errors.push("Email é obrigatório!");
+        return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value)) {
+        errors.push("Email inválido!");
     }
 }
 </script>
