@@ -10,6 +10,19 @@ const currentDate = new Date();
 const futureDate = new Date();
 futureDate.setDate(currentDate.getDate() + 7);
 
+function formatPaymentMethod(payment){
+    if(payment === 'pix'){
+        return "Pix";
+    }
+    if(payment === 'bankingBillet'){
+        return "Boleto";
+    }
+    if(payment === 'creditCard'){
+        return "Cartão de Crédito";
+    }
+    return payment;
+}
+
 </script>
 
 <template>
@@ -27,7 +40,7 @@ futureDate.setDate(currentDate.getDate() + 7);
             </div>
         </div>
         
-        <p class="mb-4"><strong class="fs-5">Método de Pagamento:</strong class="fs-5">  {{ paymentMethod }}</p>
+        <p class="mb-4"><strong class="fs-5">Método de Pagamento:</strong class="fs-5">  {{ formatPaymentMethod(paymentMethod) }}</p>
         <p class="mb-4"><strong class="fs-5">Data da Compra:</strong class="fs-5"> {{ currentDate.toLocaleDateString() }}</p>
         <p class="mb-4"><strong class="fs-5">Previsão de Entrega:</strong class="fs-5"> {{ futureDate.toLocaleDateString() }}</p>
     </div>

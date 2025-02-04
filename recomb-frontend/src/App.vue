@@ -4,6 +4,8 @@ import Home from './components/Home.vue';
 import Navbar from './components/Navbar.vue';
 import PaymentSelect from './components/PaymentSelect.vue';
 import BankingBilletInfo from './components/BankingBilletInfo.vue';
+import BankingBilletFinishPayment from './components/BankingBilletFinishPayment.vue';
+import CreditCardFinishPayment from './components/CreditCardFinishPayment.vue';
 import CreditCardInfo from './components/CreditCardInfo.vue';
 import PixFinishPayment from './components/PixFinishPayment.vue';
 import Summary from './components/Summary.vue';
@@ -52,23 +54,50 @@ function getPaymentPage(payment) {
 
 <template>
   <div>
-    <Navbar :currentPage="currentPage" @navigate="navigateTo" />
+    <Navbar 
+      :currentPage="currentPage" 
+      @navigate="navigateTo" 
+    />
     <div v-if="errorMessage" class="alert alert-danger text-center">
       {{ errorMessage }}
     </div>
     
-    <Home v-if="currentPage === 'home'" @hasSelectedItems="updateSelectedItems" @selectedItems="getPurchasedItems"/>
+    <Home 
+      v-if="currentPage === 'home'" 
+      @hasSelectedItems="updateSelectedItems" 
+      @selectedItems="getPurchasedItems"
+    />
 
-    <PaymentSelect v-if="currentPage === 'payment'" @paymentSelected="getPaymentPage"/>
+    <PaymentSelect 
+      v-if="currentPage === 'payment'" 
+      @paymentSelected="getPaymentPage"
+    />
 
-    <PixFinishPayment v-if="currentPage === 'pixFinishPayment'"/>
+    <PixFinishPayment 
+      v-if="currentPage === 'pixFinishPayment'"
+    />
 
-    <BankingBilletInfo v-if="currentPage === 'bankingBilletInfo'" ></BankingBilletInfo>
+    <BankingBilletInfo 
+      v-if="currentPage === 'bankingBilletInfo'"
+      @bankingBilletInfoCompleted="navigateTo"
+    />
+
+    <BankingBilletFinishPayment
+      v-if="currentPage === 'bankingBilletFinishPayment'"  
+    />
+
+    <CreditCardInfo
+      v-if="currentPage === 'creditCardInfo'"
+    />
+
+    <CreditCardFinishPayment
+      v-if="currentPage === 'creditCardFinishPayment'"
+    />
 
     <Summary 
-    v-if="currentPage === 'summary'"
-    :items="purchasedItems"
-    :paymentMethod="paymentSelected"
+      v-if="currentPage === 'summary'"
+      :items="purchasedItems"
+      :paymentMethod="paymentSelected"
     />
   </div>
 </template>
