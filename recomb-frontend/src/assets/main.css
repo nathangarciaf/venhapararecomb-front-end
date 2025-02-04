@@ -1,0 +1,7 @@
+.backlink {
+    text-decoration: none;
+}
+
+.backlink:hover {
+    cursor: pointer;
+}

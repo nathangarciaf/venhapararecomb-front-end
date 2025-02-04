@@ -3,76 +3,83 @@ import { ref, defineEmits } from 'vue'
 
 const emit = defineEmits(['creditCardInfoCompleted', 'back']);
 
+// Campos necessários
 const creditCardBrand = ref('');
-const creditCardBrandError = ref('');
-
 const cpfOrCnpj = ref('');
-const cpfOrCnpjError = ref('');
-
 const name = ref('');
-const nameError = ref('');
-
 const securityCode = ref('');
-const securityCodeError = ref('');
-
 const cardNumber = ref('');
-const cardNumberError = ref('');
 
 const dueDate = ref({
   month: new Date().getMonth(),
   year: new Date().getFullYear()
 });
 
+// Valida os dados preenchidos pelo usuário e caso não haja erros,
+// emite ao pai que pode proceder para a finalização do pagamento daquele
+// método selecionado.
 function submitCreditCardInfo(){
-    validateName(name, nameError);
-    validateCPFOrCNPJ(cpfOrCnpj, cpfOrCnpjError);
-    validateCVV(securityCode, securityCodeError);
-    validateCreditCardBrand(creditCardBrand,creditCardBrandError);
+    let errors = [];
 
-    if(!nameError.value && !cpfOrCnpjError.value && !securityCodeError.value && !creditCardBrandError.value){
-        emit('creditCardInfoCompleted', 'creditCardFinishPayment');
-    }
-}
-
-function validateName(name,errorMsg){
-    if(!name.value){
-        errorMsg.value = "É obrigatório inserir o nome!";
+    validateName(name, errors);
+    validateCPFOrCNPJ(cpfOrCnpj, errors);
+    validateCVV(securityCode, errors);
+    validateCreditCardBrand(creditCardBrand, errors);
+    validateDueDate(dueDate, errors);
+    
+    if (errors.length > 0) {
+        alert(errors.join(', '));
+        errors = [];
         return;
     }
-    errorMsg.value = '';
 }
 
-function validateCPFOrCNPJ(cpf, errorMsg){
-    if(!cpf.value){
-        errorMsg.value = "CPF é obrigatório!"
-        return;
-    }
-    errorMsg.value = '';
-}
-
-function validateCVV(cvv, errorMsg){
-    if(!cvv.value){
-        errorMsg.value = "CVV é obrigatório!";
-        return; 
-    }
-    if(cvv.value.length != 3){
-        errorMsg.value = "CVV possui tamanho incorreto!";
-        return;
-    }
-
-    errorMsg.value = '';
-}
-
-function validateCreditCardBrand(brand, errorMsg){
-    if(!brand.value){
-        errorMsg.value = "Bandeira do cartão é obrigatória!"
-        return; 
-    }
-    errorMsg.value = '';
-}
-
-function backToSelectPayment(){
+// Retorna para a seleção de método de pagamento caso o usuário deseje.
+function backToSelectPayment() {
     emit('back', 'payment');
+}
+
+// Todas as funções abaixo são responsáveis pela validação superficial dos dados
+// preenchidos pelo usuário
+function validateName(name, errors) {
+    if (!name.value) {
+        errors.push("É obrigatório inserir o nome!");
+    }
+}
+
+function validateCPFOrCNPJ(cpf, errors) {
+    if (!cpf.value) {
+        errors.push("CPF é obrigatório!");
+        return;
+    }
+    if (cpf.value.length !== 11 && cpf.value.length !== 14) {
+        errors.push("CPF/CNPJ de tamanho incorreto!");
+    }
+}
+
+function validateCVV(cvv, errors) {
+    if (!cvv.value) {
+        errors.push("CVV é obrigatório!");
+        return;
+    }
+    if (!/^[0-9]+$/.test(cvv.value)) {
+        errors.push("CVV deve conter apenas números!");
+    }
+    if (cvv.value.length !== 3) {
+        errors.push("CVV possui tamanho incorreto!");
+    }
+}
+
+function validateCreditCardBrand(brand, errors) {
+    if (!brand.value) {
+        errors.push("Bandeira do cartão é obrigatória!");
+    }
+}
+
+function validateDueDate(dueDate, errors) {
+    if (!dueDate.value || !dueDate.value.month || !dueDate.value.year) {
+        errors.push("Data de vencimento inválida!");
+    }
 }
 
 </script>
@@ -140,14 +147,3 @@ function backToSelectPayment(){
         </div>
     </div>
 </template>
-
-<style scoped>
-    .backlink {
-        text-decoration: none;
-    }
-
-    .backlink:hover {
-        cursor: pointer;
-    }
-
-</style>

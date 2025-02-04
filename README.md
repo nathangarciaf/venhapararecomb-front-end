@@ -1,92 +1,46 @@
 # Venha para Recomb
 
-O desafio é desenvolver um frontend para um módulo de pagamentos no sistema:
+**Documentação da solução de Nathan Garcia**
+Neste documento estará a descrição dos componentes e das funcionalidades do sistema.
+## Lógica de funcionamento e componentes 
+Iniciando pela lógica do fluxo entre as páginas desejadas, adicionei uma etapa adicional a esse fluxo,
+que consiste na escolha dos itens a serem comprados pelo usuário do sistema (já logado). O fluxo fica da seguinte maneira: 
+Usuário escolhe os produtos e vai pagar -> Seleciona a forma de pagamento -> Preenche dados necessários -> Finaliza o pagamento 
+-> Vê resumo do pedido.
 
-*Considere que:*
-- Usuário (já “logado”) escolheu X produtos e clicou em “Pagar”
+## Home e Navbar
+O usuário vê a página principal com itens a disposição para serem selecionados e comprados, 
+sendo cada item dentro de um card com seu nome, descrição e uma foto (Home.vue). Ao longo de todas 
+as páginas haverá também uma Navbar que mostrará o nome do sistema e indicando que "o Usuário está logado". 
+A navbar também possuirá o botão de "Pagar" e de "Resumo da Compra" apenas nas páginas necessárias (Navbar.vue).
 
-*Você deve criar:*
-Uma página de pagamento (checkout) com múltiplos passos 
-que possibilite ao usuário:
+## Seleção de método de pagamento
+Após decidir pagar e clicar no botão, o usuário é redirecionado para a aba de pagamento, escolhendo entre
+os três campos referidos na descrição do sistema: Cartão de Crédito, Pix ou Boleto (SelectPayment.vue). Após selecionar,
+o usuário é redirecionado para a forma de pagamento selecionado.
 
-1 - Escolher a opção de pagamento:
-	
- 	* Cartão de Crédito
- 	* Boleto
- 	* Pix
+## Cartão de Crédito
+Formulário para preencher informações necessárias: Bandeira e preenchimento das informações do titular 
+(Número de cartão, código CVV, data de vencimento mm/aaaa e Nome do titular, CPF/CNPJ) e número de parcelas (CreditCardInfo.vue). 
+Após efetuar confirmar as informações e estiverem válidas, aparecerá uma tela mostrando que o sistema está aguardando a 
+confirmação da operadora (CreditCardFinishPayment.vue). Nessa mesma página, há o botão de Resumo da compra, que será detalhado a frente.
 
-2 - Preencher as informações adicionais dependendo do método:
-	
- 	* Cartão de Crédito: Escolha da bandeira e preenchimento das informações (Número de cartão, código CVV, data de vencimento mm/aaaa e Nome do titular, CPF/CNPJ) e número de parcelas
- 	
-  	* Boleto: CPF, Nome, Sobrenome e e-mail
-	
- 	* Pix: Deve pular a segunda etapa
+## Boleto
+Formulário para preencher informações necessárias: CPF, Nome, Sobrenome e e-mail (BankingBilletInfo.vue). 
+Após efetuar confirmar as informações e estiverem válidas, aparecerá uma tela mostrando um código de barras para 
+efetuar o pagamento do boleto (imagem fictícia), junto com a expiração do mesmo e um botão para baixar o PDF 
+do boleto (CreditCardFinishPayment.vue). Nessa mesma página, há o botão de Resumo da compra, que será detalhado a frente.
 
-3 - Visualizar o instrumento de pagamento:
-	
- 	* Cartão de Crédito: Página aguardando aprovação do pagamento pela operadora
-	
- 	* Boleto: Deve exibir o código de barras do boleto, data de vencimento e botão para download do pdf do boleto
-	
- 	* Pix: Deve exibir o QRCode e um contador decrescente para expiração do mesmo
+## Pix
+Como não necessita de informações adicionais, o usuário é levado diretamente para a finalização do pagamento,
+onde haverá um QR Code com um tempo de expiração para o mesmo (PixFinishPayment.vue).
 
-4 - Visualizar o resumo da compra:
-	
- 	* Produtos comprados (foto, nome e descrição)
-	
- 	* Método de pagamento escolhido
-	
- 	* Data da compra
-	
- 	* Previsão de entrega
-
-**Escolha as tecnologias que você vai usar e tente montar uma solução completa para rodar a aplicação.**
-
-Para enviar o resultado, basta realiazar um Fork deste repositório e abra um Pull Request, com seu nome.
-
-É importante comentar que deve ser enviado apenas o código fonte. Não aceitaremos códigos compilados.
-
-Por fim, o candidato deve atualizar o Readme.md com as seguintes informações:
-  
- 1) Documentação da solução;
- 2) Lista dos diferenciais implementados
-
-## Avaliação
-
-O programa será avaliado levando em conta os seguintes critérios:
-|Critério                    |Valor   |
-|----------------------------|--------|
-|Legibilidade do Código 	   |10      |
-|Documentação do código 	   |10      |
-|Documentação da solução 	   |10      |
-|Componentização             |10      |
-|Preocupação com usabilidade |10      |
-|Total 	                     |50      |
-
-A pontuação do candidato será a soma dos valores obtidos nos critérios acima.
+## Resumo
+Apresenta as seguintes informações (Summary.vue):
+* Produtos comprados (foto, nome e descrição)
+* Método de pagamento escolhido
+* Data da compra
+* Previsão de entrega 
 
 ## Diferenciais
-
-O candidato pode aumentar a sua pontuação na seleção implementando um ou mais dos itens abaixo:
-|Item                              |Pontos Ganhos  |
-|----------------------------------|---------------|
-|Consumir API (válido mock)        |30             |
-|Implementar Clean Code 	   |20             |
-|Qualidade de Código com SonarQube |15             |
-|Implementar testes unitários 	   |15             |
-|Implementar testes e2e            |30             |
-|Implementar integração continua   |10             |
-|Implementar usando Vue            |10             |
-|Implementar usado Quasar          |20             |  
-|Total                             |150            |
-
-A nota final do candidato será acrescido dos pontos referente ao item implementado corretamente.
-
-## Penalizações
-
-O candidato será desclassificado nas seguintes situações:
-
-1) Submeter um solução que não funcione;
-2) Não cumprir os critérios presentes no seção Avaliação;
-3) Plágio;
+- Implementar usando Vue

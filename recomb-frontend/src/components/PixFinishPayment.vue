@@ -5,6 +5,8 @@ import { ref, onMounted } from 'vue'
 const time = ref(3600)
 const formattedTime = ref('');
 
+// Ao iniciar o componente, inicia uma contagem regressiva de 
+// 3600 segundos (1 hora).
 onMounted(() => {
     const interval = setInterval(() => {
         if (time.value > 0) {
@@ -17,6 +19,7 @@ onMounted(() => {
     }, 1000);
 });
 
+// Formata o tempo atual para mostrar para o usuário
 function formatTime(currentTime){
     const minutes = Math.floor(currentTime/60);
     const seconds = currentTime % 60;

@@ -1,16 +1,19 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 
+// Recebe do pai a página atual
 const props = defineProps({
   currentPage: String
 });
 
 const emit = defineEmits(['navigate']);
 
+// Envia para o pai que a próxima página é a página de pagamento(Função usada pelo botão de pagar)
 function goToPayment() {
   emit('navigate', 'payment');
 }
 
+// Envia para o pai que a próxima página é a página de resumo (Função usada pelo botão de resumo)
 function goToSummary() {
     emit('navigate', 'summary');
 }
@@ -23,6 +26,7 @@ function goToSummary() {
       
         <div class="collapse navbar-collapse justify-content-end me-5">
             <ul class="navbar-nav d-flex align-items-center">
+                <!-- Botões que só aparecem nas páginas especificadas -->
                 <button v-if="currentPage === 'home'" @click="goToPayment" class="btn btn-success">Pagar</button>
                 <button v-if="currentPage === 'pixFinishPayment' || currentPage === 'creditCardFinishPayment' || currentPage === 'bankingBilletFinishPayment'" 
                     @click="goToSummary" 

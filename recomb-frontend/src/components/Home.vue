@@ -8,6 +8,7 @@ import fogao from '@/assets/fogao.webp'
 
 let id = 0
 
+// Vetor de itens da loja
 const items = ref([
   { id: id++, name: 'Geladeira Electrolux', description: 'Frost Free Inverter 431L AutoSense Duplex Cor Black Inox Look (IF55B)', selected: false, imageRef: geladeira},
   { id: id++, name: 'Micro-ondas LG', description: '30 litros Prata Limpa Fácil (MS3043BR)', selected: false, imageRef: microondas },
@@ -19,6 +20,8 @@ const selectedItems = ref([])
 
 const emit = defineEmits(['hasSelectedItems', 'selectedItems']);
 
+// Garante que os items selecionados serão armazenados na variável correta e também confere
+// quando há itens selecionados
 function selectItems(item) {
   item.selected = !item.selected
   if (item.selected) {
@@ -31,6 +34,8 @@ function selectItems(item) {
   emit('selectedItems', selectedItems.value);
 }
 
+// Vigia constantemente qualquer alteração possível nas duas varíaveis desejadas
+// enviando para o compoente pai a resposta (emit)
 watchEffect(() => {
   emit('hasSelectedItems', selectedItems.value.length > 0);
   emit('selectedItems', selectedItems.value);

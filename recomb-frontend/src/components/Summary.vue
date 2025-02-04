@@ -1,15 +1,21 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
+
+// Recebe de seu componente pai os itens selecionados pelo cliente 
+// e também recebe o método de pagamento ainda não formatado 
 const props = defineProps({
   paymentMethod: String,
   items: Array
 });
 
+// Pega a data atual
 const currentDate = new Date();
 
+// Calcula uma data para se referir ao prazo de entrega
 const futureDate = new Date();
 futureDate.setDate(currentDate.getDate() + 7);
 
+// Responsável por formatar a string baseado no identificador do método de pagamento
 function formatPaymentMethod(payment){
     if(payment === 'pix'){
         return "Pix";

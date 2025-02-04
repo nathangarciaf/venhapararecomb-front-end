@@ -16,6 +16,7 @@ const purchasedItems = ref([]);
 const hasSelectedItems = ref(false);
 const errorMessage = ref('');
 
+// Responsável pelo transição entre as páginas
 function navigateTo(page) {
   if (page === 'payment' && !hasSelectedItems.value) {
     errorMessage.value = 'Selecione pelo menos um item antes de prosseguir!';
@@ -26,19 +27,25 @@ function navigateTo(page) {
   currentPage.value = page;
 }
 
+// Armazena os itens selecionados que foram levados para a fase de pagamento
 function getPurchasedItems(items){
   purchasedItems.value = items;
 }
 
-function updateSelectedItems(hasItems) {
+// Atualiza o sistema caso haja ou não itens selecionados
+function updateHasSelectedItems(hasItems) {
   errorMessage.value = '';
   hasSelectedItems.value = hasItems;
 }
 
+
+// Armazena o método de pagamento selecionado
 function updateSelectedPayment(payment){
   paymentSelected.value = payment;
 }
 
+// Pega o identificador do método de pagamento retornado pelo componente filho e 
+// modulariza para o formato utilizado pelo sistema
 function getPaymentPage(payment) {
   updateSelectedPayment(payment);
   const paymentPage = payment + "Info";
@@ -64,7 +71,7 @@ function getPaymentPage(payment) {
     
     <Home 
       v-if="currentPage === 'home'" 
-      @hasSelectedItems="updateSelectedItems" 
+      @hasSelectedItems="updateHasSelectedItems" 
       @selectedItems="getPurchasedItems"
     />
 

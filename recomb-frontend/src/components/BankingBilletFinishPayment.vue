@@ -1,6 +1,7 @@
 <script setup>
 import codigoBarras from '@/assets/codigoBarras.webp'
 
+// Cria uma data para representar a data de expiração do boleto
 const dueDate = new Date();
 dueDate.setDate(dueDate.getDate() + 14);
 

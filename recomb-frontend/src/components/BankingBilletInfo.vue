@@ -1,60 +1,64 @@
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits } from 'vue';
 
 const emit = defineEmits(['bankingBilletInfoCompleted', 'back']);
 
+// Campos necessários
 const cpf = ref('');
-const cpfError = ref('');
-
 const name = ref('');
-const nameError = ref('');
-
 const lastName = ref('');
-const lastNameError = ref('');
-
 const email = ref('');
-const emailError = ref('');
 
-function submitBankingBilletInfo(){
-    validateName(name, nameError);
-    validateName(lastName, lastNameError);
-    validateCPF(cpf, cpfError);
-    validateEmail(email, emailError);
-
-    if(!nameError.value && !lastNameError.value && !cpfError.value && !emailError.value){
-        emit('bankingBilletInfoCompleted', 'bankingBilletFinishPayment');
-    }
-}
-
-function validateName(name,errorMsg){
-    if(!name.value){
-        errorMsg.value = "É obrigatório inserir nome e sobrenome!";
+// Valida os dados preenchidos pelo usuário e caso não haja erros,
+// emite ao pai que pode proceder para a finalização do pagamento daquele
+// método selecionado.
+function submitBankingBilletInfo() {
+    let errors = [];
+    
+    validateName(name, errors);
+    validateName(lastName, errors);
+    validateCPF(cpf, errors);
+    validateEmail(email, errors);
+    
+    if (errors.length > 0) {
+        alert(errors.join(', '));
+        errors = [];
         return;
     }
-    errorMsg.value = '';
+    
+    emit('bankingBilletInfoCompleted', 'bankingBilletFinishPayment');
 }
 
-function validateCPF(cpf, errorMsg){
-    if(!cpf.value){
-        errorMsg.value = "CPF é obrigatório!"
-        return;
-    }
-    errorMsg.value = '';
-}
-
-function validateEmail(email, errorMsg){
-    if(!email.value){
-        errorMsg.value = "Email é obrigatório!"
-        return;
-    }
-    errorMsg.value = '';
-}
-
-function backToSelectPayment(){
+// Retorna para a seleção de método de pagamento caso o usuário deseje.
+function backToSelectPayment() {
     emit('back', 'payment');
 }
 
+// Todas as funções abaixo são responsáveis pela validação superficial dos dados
+// preenchidos pelo usuário
+function validateName(name, errors) {
+    if (!name.value) {
+        errors.push("É obrigatório inserir nome e sobrenome!");
+    }
+}
+
+function validateCPF(cpf, errors) {
+    if (!cpf.value) {
+        errors.push("CPF é obrigatório!");
+        return;
+    }
+    if (cpf.value.length !== 11 && cpf.value.length !== 14) {
+        errors.push("CPF/CNPJ de tamanho incorreto!");
+    }
+}
+
+function validateEmail(email, errors) {
+    if (!email.value) {
+        errors.push("Email é obrigatório!");
+    }
+}
 </script>
+
 
 <template>
     <a class="ms-5 fs-5 backlink" @click="backToSelectPayment">Voltar</a>
@@ -87,14 +91,3 @@ function backToSelectPayment(){
         </div>
     </div>
 </template>
-
-<style scoped>
-    .backlink {
-        text-decoration: none;
-    }
-
-    .backlink:hover {
-        cursor: pointer;
-    }
-
-</style>

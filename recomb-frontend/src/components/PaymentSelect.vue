@@ -2,8 +2,11 @@
 import { ref, defineEmits } from 'vue';
 
 const selectedPayment = ref('');
+
 const emit = defineEmits(['paymentSelected', 'back']);
 
+// Garante que o usuário selecione um método de pagamento, e ao selecionar
+// emite ao pai a escolha do usuário
 function proceedToPayment() {
   if (!selectedPayment.value) {
     alert('Selecione um método de pagamento antes de continuar!');
@@ -12,6 +15,8 @@ function proceedToPayment() {
   emit('paymentSelected', selectedPayment.value);
 }
 
+// Responsável por voltar para a página Home caso o usuário queira escolher
+// outros produtos.
 function backToHome(){
     emit('back', 'home');
 }
@@ -40,14 +45,3 @@ function backToHome(){
         </div>
     </div>
 </template>
-
-<style scoped>
-    .backlink {
-        text-decoration: none;
-    }
-
-    .backlink:hover {
-        cursor: pointer;
-    }
-
-</style>
