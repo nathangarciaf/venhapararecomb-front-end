@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 
-const emit = defineEmits(['bankingBilletInfoCompleted']);
+const emit = defineEmits(['bankingBilletInfoCompleted', 'back']);
 
 const cpf = ref('');
 const cpfError = ref('');
@@ -50,28 +50,33 @@ function validateEmail(email, errorMsg){
     errorMsg.value = '';
 }
 
+function backToSelectPayment(){
+    emit('back', 'payment');
+}
+
 </script>
 
 <template>
-    <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <a class="ms-5 fs-5 backlink" @click="backToSelectPayment">Voltar</a>
+    <div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
         <div class="card">
             <h3 class="card-header">Pagamento por boleto</h3>
             <div class="card-body">
-                <div class="mb-2 align-items-center d-flex">
-                    <label class="fw-bold me-3" for="name">Nome:</label>
+                <div class="mb-2 align-items-center">
+                    <label class="fw-bold me-3 fs-5" for="name">Nome:</label>
                     <input class="form-control" type="text" id="name" v-model="name"/>
                 </div>
 
-                <div class="mb-2 align-items-center d-flex">
-                    <label class="fw-bold me-3" for="lastName">Sobrenome:</label>
+                <div class="mb-2 align-items-center">
+                    <label class="fw-bold me-3 fs-5" for="lastName">Sobrenome:</label>
                     <input class="form-control" type="text" id="lastName" v-model="lastName"/>
                 </div>
-                <div class="mb-2 align-items-center d-flex">
-                    <label class="fw-bold me-3" for="cpf">CPF:</label>
+                <div class="mb-2 align-items-center">
+                    <label class="fw-bold me-3 fs-5" for="cpf">CPF:</label>
                     <input class="form-control" type="text" id="cpf" v-model="cpf"/>
                 </div>
-                <div class="mb-2 align-items-center d-flex">
-                    <label class="fw-bold me-3" for="email">Email:</label>
+                <div class="mb-2 align-items-center">
+                    <label class="fw-bold me-3 fs-5" for="email">Email:</label>
                     <input class="form-control" type="text" id="email" v-model="email"/>
                 </div>
 
@@ -82,3 +87,14 @@ function validateEmail(email, errorMsg){
         </div>
     </div>
 </template>
+
+<style scoped>
+    .backlink {
+        text-decoration: none;
+    }
+
+    .backlink:hover {
+        cursor: pointer;
+    }
+
+</style>

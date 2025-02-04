@@ -71,6 +71,7 @@ function getPaymentPage(payment) {
     <PaymentSelect 
       v-if="currentPage === 'payment'" 
       @paymentSelected="getPaymentPage"
+      @back="navigateTo"
     />
 
     <PixFinishPayment 
@@ -80,6 +81,7 @@ function getPaymentPage(payment) {
     <BankingBilletInfo 
       v-if="currentPage === 'bankingBilletInfo'"
       @bankingBilletInfoCompleted="navigateTo"
+      @back="navigateTo"
     />
 
     <BankingBilletFinishPayment
@@ -88,6 +90,8 @@ function getPaymentPage(payment) {
 
     <CreditCardInfo
       v-if="currentPage === 'creditCardInfo'"
+      @creditCardInfoCompleted="navigateTo"
+      @back="navigateTo"
     />
 
     <CreditCardFinishPayment
